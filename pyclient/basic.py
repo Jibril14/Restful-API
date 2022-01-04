@@ -1,6 +1,6 @@
 import requests
 
-
+'''
 # Making request to a web page
 endpoint = "https://www.github.com/"
 endpoint = "http://127.0.0.1:8000/"
@@ -71,4 +71,18 @@ print("res",response)
 
 response = requests.get("http://httpbin.org/delay/5", timeout=3) # Must terminate due to timeout 3s & 5s delay (ReadTimeout exceptions)
 print(response)
+
+'''
+
+# Making request from python client to Django app
+
+endpoint = "http://127.0.0.1:8000/api"
+
+response = requests.get(endpoint, params={"username":"Abdullahi"}, json='{"query":"Hello World"}')
+
+print(response) # returns a response object <Response[200]>
+print(response.json())
+
+
+
 
