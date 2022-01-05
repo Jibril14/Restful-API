@@ -77,7 +77,7 @@ print(response)
 # Making request from python client to Django app
 
 endpoint = "http://127.0.0.1:8000/api"
-
+endpoint = "http://127.0.0.1:8000/api/product"
 response = requests.get(endpoint, params={"username":"Abdullahi"}, json='{"query":"Hello World"}')
 
 print(response) # returns a response object <Response[200]>

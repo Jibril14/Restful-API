@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-# Create your views here.
 import json
+from django.forms.models import model_to_dict
 from product.models import Product
 
 def pyclient1(request, *args, **kwargs):
@@ -20,3 +20,17 @@ def pyclient1(request, *args, **kwargs):
 	return JsonResponse(data) # returning json 
 
 
+def pyclient2(request, *args, **kwargs):
+	# Returning data from Product models to client
+	product_data = Product.objects.all().order_by("?").first()
+	data = {} # turn to dict
+	if product_data:
+		data = model_to_dict(product_data, fields=["id", "name"]) # Narrow down data
+		#data["id"] = product_data.id
+		#data["name"] = product_data.name
+		#data["description"] = product_data.description
+		#data["price"] = product_data.price
+
+	return JsonResponse(data) # returning json to client
+
+ 
