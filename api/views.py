@@ -4,6 +4,11 @@ import json
 from django.forms.models import model_to_dict
 from product.models import Product
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from product.serializers import ProductSerializer
+
+
 def pyclient1(request, *args, **kwargs):
 
 	#Getting info  from client
@@ -32,5 +37,17 @@ def pyclient2(request, *args, **kwargs):
 		#data["price"] = product_data.price
 
 	return JsonResponse(data) # returning json to client
+
+
+# python request to DRF view
+@api_view(["GET"])
+def pyclient3(request, *args, **kwargs):
+	# Returning data from Product models to client
+	product = Product.objects.all().order_by("?").first()
+	data = {} # turn to dict
+	if product:
+		data = ProductSerializer(product).data
+
+	return Response(data) # returning json to client
 
  
