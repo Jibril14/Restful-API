@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from product.serializers import ProductSerializer
 
+from rest_framework import generics
 
 def pyclient1(request, *args, **kwargs):
 
@@ -50,4 +51,47 @@ def pyclient3(request, *args, **kwargs):
 
 	return Response(data) # returning json to client
 
+
+class ProductCreateAPIView(generics.CreateAPIView):
+	queryset = Product.objects.all()
+	serializer_class = ProductSerializer
+
+	def perform_create(self, serializer):
+ 		name = serializer.validated_data.get("name")
+ 		description = serializer.validated_data.get("description")
+ 		
+ 		if description is None:
+ 			description = name
+ 		serializer.save(description=description)
+
+product_create_view = ProductCreateAPIView.as_view()
+ 	 
+
  
+ # cbv put method
+class ProductUpdateAPIView(generics.UpdateAPIView):
+ 	queryset = Product.objects.all()
+ 	serializer_class = ProductSerializer
+ 	#lookup_field = 'pk'
+
+ 	def perform_update(self, serializer):
+ 		instance = serializer.save()
+ 		if not instance.description:
+ 			instance.description = instance.name
+
+product_update_view = ProductUpdateAPIView.as_view()
+
+
+
+ # cbv destroy method
+class ProductDeleteAPIView(generics.DestroyAPIView):
+ 	queryset = Product.objects.all()
+ 	serializer_class = ProductSerializer
+ 	#lookup_field = 'pk'
+
+ 	def perform_destroy(self, instance):
+ 		super().perform_destroy(instance)
+ 		
+
+product_del_view = ProductDeleteAPIView.as_view()
+
