@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'api',
     'product',
     'rest_framework',
+    'rest_framework.authtoken',
     
 ]
 

@@ -8,7 +8,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from product.serializers import ProductSerializer
 
-from rest_framework import generics
+from rest_framework import generics, authentication, permissions
+
 
 def pyclient1(request, *args, **kwargs):
 
@@ -95,3 +96,17 @@ class ProductDeleteAPIView(generics.DestroyAPIView):
 
 product_del_view = ProductDeleteAPIView.as_view()
 
+
+
+
+class ProductListAPIView(generics.ListAPIView):
+	queryset = Product.objects.all()
+	serializer_class = ProductSerializer
+	authentication_classes = [
+		authentication.SessionAuthentication,
+		authentication.TokenAuthentication
+	]
+		
+	permission_classes = [permissions.IsAdminUser ]
+
+product_list_view = ProductListAPIView.as_view()
