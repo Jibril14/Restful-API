@@ -119,7 +119,7 @@ class ProductMixinView(
 	mixins.RetrieveModelMixin,
 	generics.GenericAPIView
 
-):
+): 
 
 	queryset = Product.objects.all()
 	serializer_class = ProductSerializer

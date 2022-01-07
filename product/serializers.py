@@ -17,3 +17,20 @@ class ProductSerializer(serializers.ModelSerializer):
 
 	def get_anything(self, obj):
 		print(obj.id)  # get anything from the model instance
+
+
+
+class ProductSerializer2(serializers.ModelSerializer):
+	
+	class Meta:
+		model = Product
+		fields = [
+			'id',
+			'name',
+			'description',
+			'price',
+			'discount' # a method define in model
+		]
+
+	def get_anything(self, obj):
+		print(obj.id)  # get anything from the model instance
