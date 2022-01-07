@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from product.serializers import ProductSerializer
 
-from rest_framework import generics, authentication, permissions
+from rest_framework import generics, authentication, permissions, mixins
 
 
 def pyclient1(request, *args, **kwargs):
@@ -93,7 +93,6 @@ class ProductDeleteAPIView(generics.DestroyAPIView):
  	def perform_destroy(self, instance):
  		super().perform_destroy(instance)
  		
-
 product_del_view = ProductDeleteAPIView.as_view()
 
 
@@ -110,3 +109,37 @@ class ProductListAPIView(generics.ListAPIView):
 	permission_classes = [permissions.IsAdminUser ]
 
 product_list_view = ProductListAPIView.as_view()
+
+
+
+# One view to handle different request type using mixins
+class ProductMixinView(
+	mixins.CreateModelMixin,
+	mixins.ListModelMixin,
+	mixins.RetrieveModelMixin,
+	generics.GenericAPIView
+
+):
+
+	queryset = Product.objects.all()
+	serializer_class = ProductSerializer
+	#lookup_field = "pk"
+
+	def get(self, request, *args, **kwargs):
+		pk = kwargs.get("pk")
+		if pk is not None:
+			return self.retrieve(request, *args, **kwargs)
+		return self.list(request, *args, **kwargs)
+
+	def post(self, request, *args, **kwargs):
+		return self.create(request, *args, **kwargs)
+
+	def perform_create(self, serializer):
+		name = serializer.validated_data.get("name")
+		description = serializer.validated_data.get("description") or None
+		if description is None:
+			description = "No Description for this product"
+		serializer.save(description=description)
+
+product_mixin_view = ProductMixinView.as_view()
+

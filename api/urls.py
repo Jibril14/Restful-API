@@ -13,5 +13,7 @@ urlpatterns = [
 	path('drf/product/delete/<int:pk>', views.product_del_view, name = "pyclient6"),
 	path('drf/products/list/', views.product_list_view, name = "pyclient7"),
 	path('drf/auth/', obtain_auth_token, name = "py-auth"),
-
+    path('drf/product/mixin/create', views.product_mixin_view, name = "pyclient-mixin"),
+    path('drf/product/mixin/list', views.product_mixin_view, name = "pyclient-mixin"),
+    path('drf/product/mixin/detail/<int:pk>', views.product_mixin_view, name = "pyclient-mixin"),
 ]
